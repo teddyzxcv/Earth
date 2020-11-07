@@ -7,15 +7,18 @@ namespace Earth
     {
         static void Main(string[] args)
         {
-
+            Region Checnya = new Region();
+            Checnya["Nationalitites"] = "russians and chechenians";
+            Checnya["Relief"] = "Mountains";
             Country China = new Country()
             {
                 FullName = "People's Republic of China",
                 Population = 1300000000,
                 AreaOfC = 9600000,
                 Leader = "Xi Jinping",
-                TypeOfP = "	Unitary Marxist–Leninist one-party socialist republic",
-                GDP = 14900000000000
+                TypeOfP = "Unitary Marxist–Leninist one-party socialist republic",
+                GDP = 14900000000000,
+                Cities = new List<string>() { "Beijing", "Wuhan", "Hongkong", "Taiwan" }
             };
             Country Russian = new Country()
             {
@@ -24,7 +27,8 @@ namespace Earth
                 AreaOfC = 17000000,
                 Leader = "Vladimir Vladimirovich Putin",
                 TypeOfP = "Democratical republic",
-                GDP = 1700000000000
+                GDP = 1700000000000,
+                Cities = new List<string>() { "Moscow", "Sante-Peterburg", "Ekaterinburg" }
             };
             Country America = new Country()
             {
@@ -33,9 +37,11 @@ namespace Earth
                 AreaOfC = 9000000,
                 Leader = "Biden or Trump?",
                 TypeOfP = "Democratical republic",
-                GDP = 21000000000000
+                GDP = 21000000000000,
+                Cities = new List<string>() { "New York", "Chicago", "Los Angeles" }
             };
-            Russian.WriteAllInfoInC("1.txt");
+            Russian.WriteAllInfoInCountry("1.txt");
+            China.WriteAllInfoInCountry("2.txt");
 
 
 
@@ -45,38 +51,56 @@ namespace Earth
     }
 
 
-    class Country
-    {
-        public string FullName { get; set; }
-        public int Population { get; set; }
-        public int AreaOfC { get; set; }
-        public string Leader { get; set; }
-        public string TypeOfP { get; set; }
-
-        public long GDP { get; set; }
-    }
 
     class Region : Country
     {
-        public string Form { get; set; }
+        string Nationalitites = "";
+        string Relief = "";
+        public string this[string propname]
+        {
+
+
+            get
+            {
+                switch (propname)
+                {
+                    case "Nationalitites": return "Nationalitites:" + Nationalitites;
+                    case "Relief": return Relief;
+                    default: return null;
+                }
+            }
+            set
+            {
+                switch (propname)
+                {
+                    case "Nationalitites":
+                        Nationalitites = value;
+                        break;
+                    case "Relief":
+                        Relief = value;
+                        break;
+                }
+            }
+        }
+
     }
     static class WriteInfo
     {
-        public static void WriteAllInfoInC(this Country Info, string path)
+        public static void WriteAllInfoInCountry(this Country Info, string path)
         {
+
             FileInfo finf = new FileInfo(path);
             FileStream fs = finf.Create();
             fs.Close();
             File.WriteAllText(path, $"Name of country:{Info.FullName} \nPopulation: {Info.Population} \nArea:{Info.AreaOfC} \nType of administration: {Info.TypeOfP} \nGPD: {Info.GDP}");
+            File.AppendAllText(path, "\n" + String.Join(',', Info.Cities));
         }
+
     }
 
     static class CalcInfo
     {
-        public static void CalAllInfo<T>(this Country Info)
-        {
-            Console.WriteLine($"{Info.FullName}: ");
-        }
+
 
     }
 
