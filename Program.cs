@@ -64,6 +64,9 @@ namespace Earth
     {
         public static void WriteAllInfoInC(this Country Info, string path)
         {
+            FileInfo finf = new FileInfo(path);
+            FileStream fs = finf.Create();
+            fs.Close();
             File.WriteAllText(path, $"Name of country:{Info.FullName} \nPopulation: {Info.Population} \nArea:{Info.AreaOfC} \nType of administration: {Info.TypeOfP} \nGPD: {Info.GDP}");
         }
     }
